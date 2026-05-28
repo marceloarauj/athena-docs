@@ -1,0 +1,394 @@
+/* ===================================================
+   ATHENA STUDENTS UNION — CUSTOM THEME
+   Paleta: Azul-petróleo tecnológico
+   =================================================== */
+
+/* --- Light Mode Variables --- */
+:root {
+  --ifm-color-primary: #0077B6;
+  --ifm-color-primary-dark: #006BA0;
+  --ifm-color-primary-darker: #006094;
+  --ifm-color-primary-darkest: #004A74;
+  --ifm-color-primary-light: #0083CC;
+  --ifm-color-primary-lighter: #008FE0;
+  --ifm-color-primary-lightest: #009CF5;
+
+  --ifm-code-font-size: 90%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 119, 182, 0.1);
+
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --ifm-heading-font-weight: 700;
+  --ifm-navbar-height: 62px;
+  --ifm-navbar-shadow: none;
+
+  /* Custom tokens */
+  --athena-gradient-from: #020B2A;
+  --athena-gradient-to: #0077B6;
+  --athena-accent: #00B4D8;
+  --athena-accent-hover: #0096B8;
+  --athena-surface: #F1F5F9;
+  --athena-card-bg: #FFFFFF;
+  --athena-card-border: #E2E8F0;
+  --athena-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.07), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --athena-card-shadow-hover: 0 6px 24px rgba(0, 119, 182, 0.18);
+  --athena-text-muted: #64748B;
+  --athena-badge-bg: #EFF6FF;
+  --athena-badge-color: #1D4ED8;
+  --athena-separator: #E2E8F0;
+}
+
+/* --- Dark Mode Variables --- */
+[data-theme='dark'] {
+  --ifm-color-primary: #38BDF8;
+  --ifm-color-primary-dark: #0EA5E9;
+  --ifm-color-primary-darker: #0284C7;
+  --ifm-color-primary-darkest: #0369A1;
+  --ifm-color-primary-light: #7DD3FC;
+  --ifm-color-primary-lighter: #BAE6FD;
+  --ifm-color-primary-lightest: #E0F2FE;
+
+  --docusaurus-highlighted-code-line-bg: rgba(56, 189, 248, 0.14);
+
+  --athena-gradient-from: #020617;
+  --athena-gradient-to: #0C1A3A;
+  --athena-accent: #38BDF8;
+  --athena-accent-hover: #7DD3FC;
+  --athena-surface: #0B1120;
+  --athena-card-bg: #0F1B30;
+  --athena-card-border: #1E3050;
+  --athena-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+  --athena-card-shadow-hover: 0 6px 24px rgba(56, 189, 248, 0.14);
+  --athena-text-muted: #94A3B8;
+  --athena-badge-bg: #1E3A5F;
+  --athena-badge-color: #7DD3FC;
+  --athena-separator: #1E3050;
+}
+
+/* ===================================================
+   NAVBAR
+   =================================================== */
+.navbar {
+  background: linear-gradient(to right, var(--athena-gradient-from), var(--athena-gradient-to));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .navbar {
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar__brand {
+  margin-right: 1.5rem;
+}
+
+.navbar__logo {
+  height: 30px;
+  margin-right: 10px;
+}
+
+.navbar__title {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.2px;
+  color: white !important;
+}
+
+.navbar__link {
+  color: rgba(255, 255, 255, 0.78) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navbar__toggle {
+  color: white;
+}
+
+/* Mobile navbar */
+.navbar-sidebar {
+  background: #020B2A;
+}
+
+.navbar-sidebar__brand {
+  background: #020B2A;
+}
+
+/* ===================================================
+   SIDEBAR
+   =================================================== */
+.menu {
+  font-size: 0.875rem;
+  padding-top: 0.5rem;
+}
+
+.menu__link {
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: background 0.15s, color 0.15s;
+  color: var(--ifm-menu-color);
+}
+
+.menu__link:hover:not(.menu__link--active) {
+  background: rgba(0, 119, 182, 0.1);
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .menu__link:hover:not(.menu__link--active) {
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: rgba(0, 119, 182, 0.12);
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600;
+  border-left: 3px solid var(--ifm-color-primary);
+  padding-left: 9px;
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.menu__link--sublist {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--athena-text-muted) !important;
+  margin-top: 12px;
+}
+
+.menu__link--sublist:hover {
+  background: transparent !important;
+  color: var(--ifm-color-primary) !important;
+}
+
+.menu__caret::before {
+  border-color: var(--athena-text-muted) transparent transparent;
+}
+
+.menu__list-item-collapsible--active > .menu__link--sublist {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* ===================================================
+   CONTENT / MARKDOWN
+   =================================================== */
+.markdown h1:first-child {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.markdown h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--athena-separator);
+  margin-top: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+.markdown h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+/* ===================================================
+   CODE BLOCKS
+   =================================================== */
+code {
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  border: 1px solid var(--athena-card-border);
+}
+
+.theme-code-block {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--athena-card-border);
+}
+
+[data-theme='dark'] .theme-code-block {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* ===================================================
+   TABLES
+   =================================================== */
+table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+table thead tr {
+  background: linear-gradient(to right, #023E8A, #0077B6);
+  color: white;
+}
+
+[data-theme='dark'] table thead tr {
+  background: #1E3050;
+}
+
+table th {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 11px 16px;
+  border: none;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme='dark'] table th {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+table td {
+  padding: 10px 16px;
+  border-color: var(--athena-separator);
+}
+
+table tbody tr:nth-child(even) {
+  background: var(--athena-surface);
+}
+
+table tbody tr:hover {
+  background: rgba(0, 119, 182, 0.05);
+}
+
+[data-theme='dark'] table tbody tr:hover {
+  background: rgba(56, 189, 248, 0.06);
+}
+
+/* ===================================================
+   ADMONITIONS
+   =================================================== */
+.alert {
+  border-radius: 8px;
+  border-left-width: 4px;
+  font-size: 0.9rem;
+}
+
+/* ===================================================
+   FOOTER
+   =================================================== */
+.footer {
+  background: #020617 !important;
+  border-top: 1px solid #1E293B;
+}
+
+.footer__title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footer__link-item {
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+
+.footer__link-item:hover {
+  color: white !important;
+}
+
+.footer__copyright {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.825rem;
+  margin-top: 1rem;
+}
+
+/* ===================================================
+   PAGINATION
+   =================================================== */
+.pagination-nav__sublabel {
+  color: var(--athena-text-muted);
+  font-size: 0.75rem;
+}
+
+.pagination-nav__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ===================================================
+   BREADCRUMBS
+   =================================================== */
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ifm-color-primary);
+}
+
+/* ===================================================
+   SEARCH BAR
+   =================================================== */
+.navbar__search-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.875rem;
+  transition: background 0.2s, border-color 0.2s, width 0.3s;
+}
+
+.navbar__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar__search-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  outline: none;
+}
+
+/* Search results dropdown */
+[class*='searchResultItemHeading'] {
+  font-weight: 600;
+}
+
+[class*='searchResultItem'] {
+  border-radius: 8px;
+}
+
+/* ===================================================
+   SCROLLBAR
+   =================================================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--athena-separator);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--athena-text-muted);
+}

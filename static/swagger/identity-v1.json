@@ -1,0 +1,317 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Athena Identity API",
+    "description": "API de identidade, autenticação e autorização da plataforma Athena Students Union.\n\nO JWT retornado é gerado localmente com claims de permissão enriquecidas — não é o token do KeyCloak. O KeyCloak é usado apenas como armazenamento de credenciais.",
+    "version": "v1"
+  },
+  "servers": [
+    { "url": "http://localhost:5216", "description": "Development" }
+  ],
+  "paths": {
+    "/api/authentication": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Autenticar usuário",
+        "description": "Autentica o usuário via e-mail e senha usando o KeyCloak como provedor de identidade. Retorna um JWT enriquecido com claims de permissão.",
+        "operationId": "Authenticate",
+        "requestBody": {
+          "description": "Credenciais de acesso",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequestDto" },
+              "example": { "email": "usuario@escola.com", "password": "Senha@123" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_LoginResponseDto" },
+                "example": {
+                  "success": true,
+                  "data": { "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", "expiresIn": 30, "scope": "openid" },
+                  "error": null
+                }
+              }
+            }
+          },
+          "400": { "description": "Credenciais inválidas ou usuário não encontrado" }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": ["Registro"],
+        "summary": "Registrar usuário",
+        "description": "Registra um novo usuário na plataforma. O usuário é criado no KeyCloak e vinculado à instituição.",
+        "operationId": "RegisterUser",
+        "requestBody": {
+          "description": "Dados do novo usuário",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserRegisterDto" },
+              "example": { "firstName": "João", "lastName": "Silva", "email": "joao@escola.com", "roleId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_UserRegisterResponseDto" },
+                "example": {
+                  "success": true,
+                  "data": { "email": "joao@escola.com", "firstName": "João", "lastName": "Silva", "sub": "kcid-abc123" },
+                  "error": null
+                }
+              }
+            }
+          },
+          "400": { "description": "E-mail já cadastrado ou dados inválidos" }
+        }
+      }
+    },
+    "/api/profile/permissions": {
+      "get": {
+        "tags": ["Perfil"],
+        "summary": "Listar permissões do usuário",
+        "description": "Retorna todas as permissões do usuário autenticado. O usuário é identificado pelo claim `sub` do JWT.",
+        "operationId": "GetPermissions",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de permissões",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_ListUserPermissionResponseDto" },
+                "example": {
+                  "success": true,
+                  "data": [
+                    { "code": "CREATE_ROLE", "description": "Criar perfis de acesso", "isGranted": true },
+                    { "code": "UPDATE_ROLE", "description": "Editar perfis de acesso", "isGranted": false }
+                  ],
+                  "error": null
+                }
+              }
+            }
+          },
+          "401": { "description": "Token inválido ou ausente" },
+          "400": { "description": "Claim `sub` ausente no token" }
+        }
+      }
+    },
+    "/api/profile/permissions/{code}/grant": {
+      "put": {
+        "tags": ["Perfil"],
+        "summary": "Conceder permissão",
+        "description": "Concede uma permissão específica ao usuário autenticado.",
+        "operationId": "GrantPermission",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "code", "in": "path", "required": true,
+            "description": "Código da permissão (ex: `CREATE_ROLE`)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissão concedida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_Void" },
+                "example": { "success": true, "data": null, "error": null }
+              }
+            }
+          },
+          "401": { "description": "Token inválido ou ausente" }
+        }
+      }
+    },
+    "/api/profile/permissions/{code}/revoke": {
+      "put": {
+        "tags": ["Perfil"],
+        "summary": "Revogar permissão",
+        "description": "Revoga uma permissão específica do usuário autenticado.",
+        "operationId": "RevokePermission",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "code", "in": "path", "required": true,
+            "description": "Código da permissão (ex: `CREATE_ROLE`)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissão revogada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_Void" },
+                "example": { "success": true, "data": null, "error": null }
+              }
+            }
+          },
+          "401": { "description": "Token inválido ou ausente" }
+        }
+      }
+    },
+    "/api/role": {
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Criar role",
+        "description": "Cria uma nova role (perfil de acesso) com permissões vinculadas. Requer a permissão `CREATE_ROLE`.",
+        "operationId": "CreateRole",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Dados da nova role",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRoleDto" },
+              "example": {
+                "name": "Coordenador",
+                "description": "Coordenador de curso com acesso à grade curricular",
+                "permissionCodes": ["CREATE_ROLE", "UPDATE_ROLE"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AthenaApiResponse_CreateRoleResponseDto" },
+                "example": {
+                  "success": true,
+                  "data": { "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "name": "Coordenador" },
+                  "error": null
+                }
+              }
+            }
+          },
+          "401": { "description": "Token inválido ou ausente" },
+          "403": { "description": "Permissão `CREATE_ROLE` não concedida" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Token JWT obtido via `POST /api/authentication`."
+      }
+    },
+    "schemas": {
+      "LoginRequestDto": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email", "example": "usuario@escola.com" },
+          "password": { "type": "string", "format": "password", "example": "Senha@123" }
+        }
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string", "description": "JWT enriquecido com claims de permissão" },
+          "expiresIn": { "type": "integer", "description": "Expiração em minutos", "example": 30 },
+          "scope": { "type": "string", "example": "openid" }
+        }
+      },
+      "AthenaApiResponse_LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "$ref": "#/components/schemas/LoginResponseDto" },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "UserRegisterDto": {
+        "type": "object",
+        "required": ["firstName", "lastName", "email", "roleId"],
+        "properties": {
+          "firstName": { "type": "string", "example": "João" },
+          "lastName": { "type": "string", "example": "Silva" },
+          "email": { "type": "string", "format": "email", "example": "joao@escola.com" },
+          "roleId": { "type": "string", "format": "uuid", "description": "ID da role a ser atribuída", "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6" }
+        }
+      },
+      "UserRegisterResponseDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "sub": { "type": "string", "description": "Subject ID do usuário no KeyCloak" }
+        }
+      },
+      "AthenaApiResponse_UserRegisterResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "$ref": "#/components/schemas/UserRegisterResponseDto" },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "UserPermissionResponseDto": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "example": "CREATE_ROLE" },
+          "description": { "type": "string", "example": "Criar perfis de acesso" },
+          "isGranted": { "type": "boolean" }
+        }
+      },
+      "AthenaApiResponse_ListUserPermissionResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "array", "items": { "$ref": "#/components/schemas/UserPermissionResponseDto" } },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": { "type": "string", "example": "Coordenador" },
+          "description": { "type": "string", "example": "Coordenador de curso" },
+          "permissionCodes": { "type": "array", "items": { "type": "string" }, "default": [], "example": ["CREATE_ROLE"] }
+        }
+      },
+      "CreateRoleResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" }
+        }
+      },
+      "AthenaApiResponse_CreateRoleResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "$ref": "#/components/schemas/CreateRoleResponseDto" },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "AthenaApiResponse_Void": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "nullable": true },
+          "error": { "type": "string", "nullable": true }
+        }
+      }
+    }
+  }
+}
