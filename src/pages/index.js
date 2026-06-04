@@ -10,7 +10,6 @@ const APIS = [
     name: 'Institution API',
     tagline: 'Gerenciamento completo de instituições de ensino',
     badge: 'Porto :5000',
-    swaggerHref: '/swagger/v1.json',
     introTo: '/intro',
     groups: [
       {
@@ -64,7 +63,6 @@ const APIS = [
     name: 'Identity API',
     tagline: 'Identidade, autenticação e autorização via JWT + KeyCloak',
     badge: 'Porto :5216',
-    swaggerHref: '/swagger/identity-v1.json',
     introTo: '/identity-api/intro',
     groups: [
       {
@@ -96,6 +94,23 @@ const APIS = [
         description: 'Crie perfis de acesso com conjuntos de permissões vinculadas.',
         link: '/identity-api/roles/create-role',
         count: 1,
+      },
+    ],
+  },
+  {
+    id: 'athena-ai',
+    name: 'Athena AI',
+    tagline: 'Assistente de IA com streaming via SSE — orquestração, RAG e geração de texto',
+    badge: 'Porto :5037',
+    introTo: '/athena-ai/intro',
+    groups: [
+      {
+        icon: '🤖',
+        title: 'Chat',
+        description: 'Envie prompts ao assistente e receba respostas geradas em tempo real via Server-Sent Events.',
+        link: '/athena-ai/chat/assistant',
+        count: 1,
+        tag: 'Streaming',
       },
     ],
   },
@@ -140,7 +155,7 @@ function GroupCard({ icon, title, description, link, count, tag }) {
   );
 }
 
-function ApiSection({ id, name, tagline, badge, swaggerHref, introTo, groups }) {
+function ApiSection({ id, name, tagline, badge, introTo, groups }) {
   return (
     <section className={styles.apiSection}>
       <div className="container">
@@ -152,7 +167,6 @@ function ApiSection({ id, name, tagline, badge, swaggerHref, introTo, groups }) 
           </div>
           <div className={styles.apiHeaderRight}>
             <Link to={introTo} className={styles.apiLinkPrimary}>Visão geral</Link>
-            <Link to={swaggerHref} className={styles.apiLinkGhost} target="_blank" rel="noopener noreferrer">swagger.json ↗</Link>
           </div>
         </div>
         <div className={styles.grid}>

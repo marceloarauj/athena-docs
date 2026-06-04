@@ -62,43 +62,25 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        logo: {
-          alt: 'Athena Students',
-          src: 'img/logo.svg',
-        },
         title: 'Athena Docs',
         items: [
           {
-            type: 'dropdown',
-            label: 'Institution API',
+            type: 'docSidebar',
+            sidebarId: 'institutionApiSidebar',
             position: 'left',
-            items: [
-              {
-                type: 'docSidebar',
-                sidebarId: 'institutionApiSidebar',
-                label: 'Documentação',
-              },
-              {
-                href: '/swagger/v1.json',
-                label: 'swagger.json',
-              },
-            ],
+            label: 'Institution API',
           },
           {
-            type: 'dropdown',
-            label: 'Identity API',
+            type: 'docSidebar',
+            sidebarId: 'identityApiSidebar',
             position: 'left',
-            items: [
-              {
-                type: 'docSidebar',
-                sidebarId: 'identityApiSidebar',
-                label: 'Documentação',
-              },
-              {
-                href: '/swagger/identity-v1.json',
-                label: 'swagger.json',
-              },
-            ],
+            label: 'Identity API',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'athenaAiSidebar',
+            position: 'left',
+            label: 'Athena AI',
           },
         ],
       },
@@ -124,10 +106,10 @@ const config = {
             ],
           },
           {
-            title: 'OpenAPI',
+            title: 'Athena AI',
             items: [
-              { label: 'Institution swagger.json', href: '/swagger/v1.json' },
-              { label: 'Identity swagger.json', href: '/swagger/identity-v1.json' },
+              { label: 'Visão Geral', to: '/athena-ai/intro' },
+              { label: 'Chat · Assistant', to: '/athena-ai/chat/assistant' },
             ],
           },
         ],

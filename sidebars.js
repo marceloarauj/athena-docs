@@ -205,6 +205,15 @@ const sidebars = {
     },
   ],
 
+  athenaAiSidebar: [
+    'athena-ai/intro',
+    {
+      type: 'category',
+      label: 'Chat',
+      items: ['athena-ai/chat/assistant'],
+    },
+  ],
+
   identityApiSidebar: [
     'identity-api/identity-api-intro',
     {

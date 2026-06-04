@@ -5,7 +5,17 @@
  width="1024.000000pt" height="1024.000000pt" viewBox="0 0 1024.000000 1024.000000"
  preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
+<defs>
+  <filter id="fill-interior" x="-25%" y="-25%" width="150%" height="150%">
+    <feMorphology in="SourceAlpha" operator="dilate" radius="200" result="dilated"/>
+    <feMorphology in="dilated" operator="erode" radius="200" result="closed"/>
+    <feFlood flood-color="white" result="white-flood"/>
+    <feComposite in="white-flood" in2="closed" operator="in" result="white-bg"/>
+    <feComposite in="SourceGraphic" in2="white-bg" operator="over"/>
+  </filter>
+</defs>
+
+<g filter="url(#fill-interior)" transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
 fill="#000000" stroke="none">
 <path d="M4989 9623 l-2 -88 -9 60 c-17 113 -13 106 -61 99 -23 -4 -46 -10
 -51 -14 -4 -5 8 -95 28 -202 40 -219 49 -276 71 -438 24 -186 19 -204 -15 -45
